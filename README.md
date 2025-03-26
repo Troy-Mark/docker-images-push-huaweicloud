@@ -129,5 +129,16 @@ HW_REGISTRY，HW_ORG_NAME，HW_REGISTRY_USER，HW_REGISTRY_PASSWORD<br>
 
 ### 定时执行
 修改/.github/workflows/docker.yaml文件
-添加 schedule即可定时执行(此处cron使用UTC时区)
-![](doc/定时执行.png)
+添加 schedule 即可定时执行(此处cron使用UTC时区)
+```
+name: Scheduled Task
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天UTC时间00:00执行（北京时间08:00）
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Script
+        run: echo "定时任务已执行"
+```
