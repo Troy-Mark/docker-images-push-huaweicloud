@@ -30,13 +30,13 @@
 
 例如长期登陆指令为：<br>
 ```
-docker login -u cn-north-4@NKXXXXXXXXXXXXXS -p 2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx6a2 swr.cn-north-4.myhuaweicloud.com
+docker login -u cn-north-4@NKXXXXXXXXXXS -p 2xxxxxxxxxxxxxx6a2 swr.cn-north-4.myhuaweicloud.com
 ```
 
 
 需要保存三个值，后面会用到：<br>
-华为云用户名：cn-north-4@NKXXXXXXXXXXXXXS<br>
-华为云用户密码：2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx6a2<br>
+华为云用户名：cn-north-4@NKXXXXXXXXXXS<br>
+华为云用户密码：2xxxxxxxxxxxxxx6a2<br>
 华为云仓库地址：swr.cn-north-4.myhuaweicloud.com<br>
 
 #### 创建组织
