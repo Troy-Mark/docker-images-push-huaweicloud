@@ -1,0 +1,92 @@
+name: Docker to HuaweiCloud SWR
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths: 
+      - 'images.json'
+env:
+  HUAWEICLOUD_REGISTRY: "${{ secrets.HW_REGISTRY }}" 
+  HUAWEICLOUD_ORG_NAME: "${{ secrets.HW_ORG_NAME }}" 
+  HUAWEICLOUD_USER: "${{ secrets.HW_REGISTRY_USER }}" 
+  HUAWEICLOUD_PASSWORD: "${{ secrets.HW_REGISTRY_PASSWORD }}"
+
+jobs:
+  build:
+    name: Images Push to SWR
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq skopeo
+
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker-container
+        platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x
+
+    - name: Login to HuaweiCloud SWR
+      run: |
+        docker login -u "$HUAWEICLOUD_USER" -p $HUAWEICLOUD_PASSWORD $HUAWEICLOUD_REGISTRY
+      env:
+        HUAWEICLOUD_USER: ${{ secrets.HW_REGISTRY_USER }}
+        HUAWEICLOUD_PASSWORD: ${{ secrets.HW_REGISTRY_PASSWORD }}
+
+    - name: Process and push images
+      run: |
+        set -euo pipefail
+        declare -A ARCH_MAP=(
+          ["386"]="linux/386"
+          ["amd64"]="linux/amd64"
+          ["armv5"]="linux/arm/v5"
+          ["armv6"]="linux/arm/v6"
+          ["armv7"]="linux/arm/v7"
+          ["arm64v8"]="linux/arm64/v8"
+          ["ppc64le"]="linux/ppc64le"
+          ["riscv64"]="linux/riscv64"
+          ["s390x"]="linux/s390x"
+        )
+
+        jq -c '.[]' images.json | while read -r item; do
+          image=$(jq -r '.image' <<< "$item")
+          version=$(jq -r '.version' <<< "$item")
+          
+          # 标准化镜像名称
+          clean_image=$(sed 's/@sha256.*//; s/[^a-zA-Z0-9._/-]//g' <<< "$image")
+          [[ "$clean_image" == */* ]] || clean_image="library/$clean_image"
+
+          # 多架构处理
+          jq -r '.architectures[]' <<< "$item" | while read -r arch; do
+            target_tag="${arch}-${version}"
+            platform=${ARCH_MAP[$arch]}
+            
+            echo "Processing $clean_image (arch: $arch, platform: $platform)"
+            
+            # 拉取指定架构镜像
+            docker pull --platform "$platform" "$clean_image"
+            
+            # 生成华为云镜像路径
+            hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$(basename $clean_image)"
+            
+            # 标签与推送
+            docker tag "$clean_image" "${hw_image}:${target_tag}"
+            docker push "${hw_image}:${target_tag}"
+            
+            # 清理中间镜像
+            docker rmi "$clean_image" "${hw_image}:${target_tag}" || true
+          done
+        done
+        # 全局清理
+        docker image prune -f
+      env:
+        HUAWEICLOUD_REGISTRY: ${{ secrets.HW_REGISTRY }}
+        HUAWEICLOUD_ORG_NAME: ${{ secrets.HW_ORG_NAME }}
+        HUAWEICLOUD_USER: ${{ secrets.HW_REGISTRY_USER }}
+        HUAWEICLOUD_PASSWORD: ${{ secrets.HW_REGISTRY_PASSWORD }}

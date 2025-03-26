@@ -1,0 +1,10 @@
+[
+  {
+    "image": "vaultwarden/server",
+    "version": "latest",
+    "architectures": [
+      "amd64",
+      "arm64v8"
+    ]
+  }
+]
