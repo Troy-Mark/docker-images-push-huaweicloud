@@ -1,6 +1,6 @@
 [
   {
-    "image": "vaultwarden/server",
+    "image": "vaultwarden",
     "version": "latest",
     "architectures": [
       "amd64"
