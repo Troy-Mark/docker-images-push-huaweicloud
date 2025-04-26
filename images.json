@@ -3,7 +3,7 @@
     "image": "vaultwarden",
     "version": "latest",
     "architectures": [
-      "amd64"
+      "arm64v8"
     ]
   }
 ]
