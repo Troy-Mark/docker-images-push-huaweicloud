@@ -1,6 +1,6 @@
 [
   {
-    "image": "redis",
+    "image": "opencti/platform",
     "version": "latest",
     "architectures": [
       "amd64"
