@@ -1,7 +1,14 @@
 [
   {
-    "image": "opencti/platform",
-    "version": "latest",
+    "image": "docker.elastic.co/elasticsearch/elasticsearch",
+    "version": "8.18.0",
+    "architectures": [
+      "amd64"
+    ]
+  },
+  {
+    "image": "redis",
+    "version": "7.4.3",
     "architectures": [
       "amd64"
     ]
