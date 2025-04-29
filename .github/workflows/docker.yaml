@@ -7,6 +7,7 @@ on:
       - main
     paths: 
       - 'images.json'
+
 env:
   HUAWEICLOUD_REGISTRY: "${{ secrets.HW_REGISTRY }}" 
   HUAWEICLOUD_ORG_NAME: "${{ secrets.HW_ORG_NAME }}" 
@@ -72,8 +73,13 @@ jobs:
             # 拉取指定架构镜像
             docker pull --platform "$platform" "$clean_image"
             
-            # 生成华为云镜像路径
-            hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$(basename $clean_image)"
+            if [[ "$clean_image" =~ ^([^/]*)/(.*)$ ]]; then
+              namespace="${BASH_REMATCH[1]}"
+              repo="${BASH_REMATCH[2]}"
+              hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$namespace/$repo"
+            else
+              hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$(basename $clean_image)"
+            fi
             
             # 标签与推送
             docker tag "$clean_image" "${hw_image}:${target_tag}"
