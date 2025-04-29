@@ -68,12 +68,10 @@ jobs:
           echo "Processing image: $image with version: $version"
           
           # 构建完整的镜像标签
-          if [[ "$image" == *@sha256:* ]]; then
-            full_image="$image"
-          elif [[ -n "$version" ]]; then
-            full_image="$clean_image:$version"
+          if [[ -n "$version" ]]; then
+            full_image="$image:$version"
           else
-            full_image="$clean_image:latest"
+            full_image="$image:latest"
           fi
             
           # 多架构处理
@@ -87,7 +85,12 @@ jobs:
             echo "Pulling image $full_image for platform $platform..."
             docker pull --platform "$platform" "$full_image"
             
-            if [[ "$clean_image" =~ ^([^/]*)/(.*)$ ]]; then
+            # 确定目标镜像路径
+            if [[ "$image" == "redis" ]]; then
+              hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/redis"
+            elif [[ "$image" == "elasticsearch/elasticsearch" ]]; then
+              hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/elasticsearch/elasticsearch"
+            elif [[ "$clean_image" =~ ^([^/]*)/(.*)$ ]]; then
               namespace="${BASH_REMATCH[1]}"
               repo="${BASH_REMATCH[2]}"
               hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$namespace/$repo"
