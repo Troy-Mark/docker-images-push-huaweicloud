@@ -1,12 +1,5 @@
 [
   {
-    "image": "elasticsearch",
-    "version": "latest",
-    "architectures": [
-      "amd64"
-    ]
-  },
-  {
     "image": "redis",
     "version": "7.4.3",
     "architectures": [
