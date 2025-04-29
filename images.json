@@ -1,7 +1,7 @@
 [
   {
-    "image": "redis@sha256:5cd6bd82af6410b8c9517645325a1904a9bd1df0f1d85a4d8ab0c228aa3dcedf",
-    "version": "7.4.3",
+    "image": "redis",
+    "version": "latest",
     "architectures": [
       "amd64"
     ]
