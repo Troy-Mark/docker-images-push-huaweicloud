@@ -1,28 +1,7 @@
 [
   {
-    "image": "redis",
+    "image": "redis@sha256:5cd6bd82af6410b8c9517645325a1904a9bd1df0f1d85a4d8ab0c228aa3dcedf",
     "version": "7.4.3",
-    "architectures": [
-      "amd64"
-    ]
-  },
-  {
-    "image": "elasticsearch",
-    "version": "8.18.0",
-    "architectures": [
-      "amd64"
-    ]
-  },
-  {
-    "image": "minio/minio",
-    "version": "RELEASE.2024-05-28T17-19-04Z",
-    "architectures": [
-      "amd64"
-    ]
-  },
-  {
-    "image": "rabbitmq",
-    "version": "4.1-management",
     "architectures": [
       "amd64"
     ]
