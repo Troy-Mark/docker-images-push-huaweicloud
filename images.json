@@ -1,7 +1,7 @@
 [
     {
-      "image": "redis",
-      "version": "7.4.3",
+      "image": "opencti/connector-alienvault",
+      "version": "6.6.8",
       "architectures": [
         "amd64"
       ]
