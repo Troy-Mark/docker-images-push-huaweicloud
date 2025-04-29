@@ -35,6 +35,7 @@ jobs:
 
     - name: Login to HuaweiCloud SWR
       run: |
+        echo "Logging in to Huawei Cloud SWR..."
         docker login -u "$HUAWEICLOUD_USER" -p $HUAWEICLOUD_PASSWORD $HUAWEICLOUD_REGISTRY
       env:
         HUAWEICLOUD_USER: ${{ secrets.HW_REGISTRY_USER }}
@@ -55,6 +56,7 @@ jobs:
           ["s390x"]="linux/s390x"
         )
 
+        echo "Reading images from images.json..."
         jq -c '.[]' images.json | while read -r item; do
           image=$(jq -r '.image' <<< "$item")
           version=$(jq -r '.version' <<< "$item")
@@ -63,15 +65,18 @@ jobs:
           clean_image=$(sed 's/@sha256.*//; s/[^a-zA-Z0-9._/-]//g' <<< "$image")
           [[ "$clean_image" == */* ]] || clean_image="library/$clean_image"
 
+          echo "Processing image: $image with version: $version"
+          
           # 多架构处理
           jq -r '.architectures[]' <<< "$item" | while read -r arch; do
             target_tag="${arch}-${version}"
             platform=${ARCH_MAP[$arch]}
             
-            echo "Processing $clean_image (arch: $arch, platform: $platform)"
+            echo "Processing architecture: $arch (platform: $platform)"
             
             # 拉取指定架构镜像
-            docker pull --platform "$platform" "$clean_image"
+            echo "Pulling image $clean_image:$version for platform $platform..."
+            docker pull --platform "$platform" "$clean_image:$version"
             
             if [[ "$clean_image" =~ ^([^/]*)/(.*)$ ]]; then
               namespace="${BASH_REMATCH[1]}"
@@ -81,15 +86,19 @@ jobs:
               hw_image="$HUAWEICLOUD_REGISTRY/$HUAWEICLOUD_ORG_NAME/$(basename $clean_image)"
             fi
             
-            # 标签与推送
-            docker tag "$clean_image" "${hw_image}:${target_tag}"
+            echo "Tagging image as ${hw_image}:${target_tag}..."
+            docker tag "$clean_image:$version" "${hw_image}:${target_tag}"
+            
+            echo "Pushing image ${hw_image}:${target_tag} to Huawei Cloud SWR..."
             docker push "${hw_image}:${target_tag}"
             
             # 清理中间镜像
-            docker rmi "$clean_image" "${hw_image}:${target_tag}" || true
+            echo "Cleaning up intermediate images..."
+            docker rmi "$clean_image:$version" "${hw_image}:${target_tag}" || true
           done
         done
         # 全局清理
+        echo "Performing global cleanup of unused images..."
         docker image prune -f
       env:
         HUAWEICLOUD_REGISTRY: ${{ secrets.HW_REGISTRY }}
