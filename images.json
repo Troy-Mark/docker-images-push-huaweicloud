@@ -1,7 +1,7 @@
 [
   {
     "image": "elasticsearch",
-    "version": "8.18.0",
+    "version": "latest",
     "architectures": [
       "amd64"
     ]
