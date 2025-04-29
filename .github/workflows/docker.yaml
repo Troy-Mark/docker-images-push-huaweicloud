@@ -67,16 +67,25 @@ jobs:
 
           echo "Processing image: $image with version: $version"
           
+          # 构建完整的镜像标签
+          if [[ "$image" == *@sha256:* ]]; then
+            full_image="$image"
+          elif [[ -n "$version" ]]; then
+            full_image="$clean_image:$version"
+          else
+            full_image="$clean_image:latest"
+          fi
+            
           # 多架构处理
           jq -r '.architectures[]' <<< "$item" | while read -r arch; do
-            target_tag="${arch}-${version}"
+            target_tag="${arch}-${version:-latest}"
             platform=${ARCH_MAP[$arch]}
             
             echo "Processing architecture: $arch (platform: $platform)"
             
             # 拉取指定架构镜像
-            echo "Pulling image $clean_image:$version for platform $platform..."
-            docker pull --platform "$platform" "$clean_image:$version"
+            echo "Pulling image $full_image for platform $platform..."
+            docker pull --platform "$platform" "$full_image"
             
             if [[ "$clean_image" =~ ^([^/]*)/(.*)$ ]]; then
               namespace="${BASH_REMATCH[1]}"
@@ -87,14 +96,14 @@ jobs:
             fi
             
             echo "Tagging image as ${hw_image}:${target_tag}..."
-            docker tag "$clean_image:$version" "${hw_image}:${target_tag}"
+            docker tag "$full_image" "${hw_image}:${target_tag}"
             
             echo "Pushing image ${hw_image}:${target_tag} to Huawei Cloud SWR..."
             docker push "${hw_image}:${target_tag}"
             
             # 清理中间镜像
             echo "Cleaning up intermediate images..."
-            docker rmi "$clean_image:$version" "${hw_image}:${target_tag}" || true
+            docker rmi "$full_image" "${hw_image}:${target_tag}" || true
           done
         done
         # 全局清理
