@@ -5,12 +5,5 @@
     "architectures": [
       "amd64"
     ]
-  },
-  {
-    "image": "rabbitmq",
-    "version": "4.1-management",
-    "architectures": [
-      "amd64"
-    ]
   }
 ]
