@@ -1,6 +1,38 @@
 [
     {
-      "image": "vaultwarden/server",
+      "image": "postgres",
+      "version": "12.3-alpine",
+      "architectures": [
+        "amd64"
+      ]
+    },
+
+    {
+      "image": "redis",
+      "version": "alpine",
+      "architectures": [
+        "amd64"
+      ]
+    },
+    
+    {
+      "image": "docker.pkg.github.com/yogeshojha/rengine/rengine",
+      "version": "latest",
+      "architectures": [
+        "amd64"
+      ]
+    },
+
+    {
+      "image": "nginx:alpine",
+      "version": "alpine",
+      "architectures": [
+        "amd64"
+      ]
+    },
+
+    {
+      "image": "ollama/ollama",
       "version": "latest",
       "architectures": [
         "amd64"
