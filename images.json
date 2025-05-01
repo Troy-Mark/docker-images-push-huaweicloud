@@ -1,6 +1,6 @@
 [
     {
-      "image": "snipe/snipe-it",
+      "image": "mariadb",
       "version": "latest",
       "architectures": [
         "amd64"
