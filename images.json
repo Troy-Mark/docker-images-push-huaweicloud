@@ -1,7 +1,7 @@
 [
     {
       "image": "mariadb",
-      "version": "latest",
+      "version": "11.5.2",
       "architectures": [
         "amd64"
       ]
