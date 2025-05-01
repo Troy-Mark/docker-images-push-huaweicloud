@@ -1,22 +1,6 @@
 [
     {
-      "image": "postgres",
-      "version": "12.3-alpine",
-      "architectures": [
-        "amd64"
-      ]
-    },
-
-    {
-      "image": "redis",
-      "version": "alpine",
-      "architectures": [
-        "amd64"
-      ]
-    },
-    
-    {
-      "image": "docker.pkg.github.com/yogeshojha/rengine/rengine",
+      "image": "ghcr.io/socfortress/copilot-backend",
       "version": "latest",
       "architectures": [
         "amd64"
@@ -24,15 +8,31 @@
     },
 
     {
-      "image": "nginx:alpine",
-      "version": "alpine",
+      "image": "ghcr.io/socfortress/copilot-frontend",
+      "version": "latest",
+      "architectures": [
+        "amd64"
+      ]
+    },
+    
+    {
+      "image": "mysql",
+      "version": "8.0.38-debian",
       "architectures": [
         "amd64"
       ]
     },
 
     {
-      "image": "ollama/ollama",
+      "image": "quay.io/minio/minio",
+      "version": "RELEASE.2024-09-13T20-26-02Z",
+      "architectures": [
+        "amd64"
+      ]
+    },
+
+    {
+      "image": "ghcr.io/socfortress/copilot-nuclei-module",
       "version": "latest",
       "architectures": [
         "amd64"
