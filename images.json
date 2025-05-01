@@ -1,7 +1,7 @@
 [
     {
       "image": "elestio/glpi",
-      "version": "11.5.2",
+      "version": "latest",
       "architectures": [
         "amd64"
       ]
