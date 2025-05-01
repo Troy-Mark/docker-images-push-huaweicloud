@@ -1,38 +1,6 @@
 [
     {
-      "image": "ghcr.io/socfortress/copilot-backend",
-      "version": "latest",
-      "architectures": [
-        "amd64"
-      ]
-    },
-
-    {
-      "image": "ghcr.io/socfortress/copilot-frontend",
-      "version": "latest",
-      "architectures": [
-        "amd64"
-      ]
-    },
-    
-    {
-      "image": "mysql",
-      "version": "8.0.38-debian",
-      "architectures": [
-        "amd64"
-      ]
-    },
-
-    {
-      "image": "quay.io/minio/minio",
-      "version": "RELEASE.2024-09-13T20-26-02Z",
-      "architectures": [
-        "amd64"
-      ]
-    },
-
-    {
-      "image": "ghcr.io/socfortress/copilot-nuclei-module",
+      "image": "snipe/snipe-it",
       "version": "latest",
       "architectures": [
         "amd64"
