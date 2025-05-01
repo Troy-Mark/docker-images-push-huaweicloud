@@ -1,6 +1,6 @@
 [
     {
-      "image": "mariadb",
+      "image": "elestio/glpi",
       "version": "11.5.2",
       "architectures": [
         "amd64"
