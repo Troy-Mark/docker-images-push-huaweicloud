@@ -1,6 +1,13 @@
 [
     {
-      "image": "elestio/glpi",
+      "image": "elestio/mysql",
+      "version": "8.0",
+      "architectures": [
+        "amd64"
+      ]
+    },
+    {
+      "image": "phpmyadmin",
       "version": "latest",
       "architectures": [
         "amd64"
