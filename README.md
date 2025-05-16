@@ -2,10 +2,8 @@
 
 使用Github Action将国外的Docker镜像转存到华为云私有仓库，供国内服务器使用，免费易用<br>
 - 支持DockerHub, gcr.io, k8s.io, ghcr.io等任意仓库<br>
-- 支持最大40GB的大型镜像<br>
-- 使用阿里云的官方线路，速度快<br>
 
-本项目参考了大佬技术爬爬虾的(https://github.com/tech-shrimp/me)项目<br>
+本项目参考了大佬技术爬爬虾的 (https://github.com/tech-shrimp/me) 项目<br>
 
 ## 使用方式
 
