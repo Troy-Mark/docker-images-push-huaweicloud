@@ -1,14 +1,7 @@
 [
     {
-      "image": "elestio/mysql",
-      "version": "8.0",
-      "architectures": [
-        "amd64"
-      ]
-    },
-    {
-      "image": "phpmyadmin",
-      "version": "latest",
+      "image": "internetsystemsconsortium/bind9",
+      "version": "9.20",
       "architectures": [
         "amd64"
       ]
